@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-search-component',
   templateUrl: './search-component.component.html',
-  styleUrls: ['./search-component.component.css']
+  styleUrls: ['search-component.component.css']
 })
 export class SearchComponentComponent implements OnInit {
 
@@ -28,7 +28,14 @@ export class SearchComponentComponent implements OnInit {
     'filter' : 'Please select a filter option',
     'text' : 'Please enter search text',
     'all' : 'You need to select filter and place a search text'
-  }
+  };
+  tableContent: string = "";
+  searchOnGoing: boolean = false;
+  searchDone: boolean = false;
+  resultsArray = [
+    {'id': '1', 'name' : 'Bruce Wayne', 'publisher': 'DC', 'alias': 'Batman'},
+    {'id': '2', 'name' : 'Thor', 'publisher': 'Marvel', 'alias': 'God of Thunder'}
+  ];
 
   constructor() { }
 
@@ -36,28 +43,32 @@ export class SearchComponentComponent implements OnInit {
     this.filterOptions;
     this.search = "";
     this.missingErrors;
+    this.tableContent;
   }
 
   checkIfInputIsValid() {
-    let inputIsValid = false,
-        radioInputs = document.getElementsByClassName("hero-filter");
+    let radioInputs = <any> document.getElementsByClassName("hero-filter");
 
     for(let i = 0; i < radioInputs.length; i++) {
       if(radioInputs[i].checked) this.radioSelected = true;
     }
 
     if(this.search !== "" && this.radioSelected) { 
-      inputIsValid = true;
+      this.inputIsValid = true;
+    } else {
+      this.inputIsValid = false;
     }
-    this.inputIsValid = inputIsValid;
   }
 
   searchAvenger() {
+    this.searchOnGoing = true;
 
-  }
+    //Call Service here
 
-  generateTable() {
-
+    
+    //When search is done
+    this.searchDone = true;
+    this.searchOnGoing = false;
   }
 
 }

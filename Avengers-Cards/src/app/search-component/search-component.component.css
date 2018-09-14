@@ -1,0 +1,39 @@
+.flex-container {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.flex-form {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    width: 100%;
+}
+
+.flex-form h2, .flex-form .form-control, .flex-form .flex-options {
+    width: 50%;
+}
+.binding-demonstration {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+}
+.binding-demonstration span {
+    font-weight: bold;
+}
+.flex-container button {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+#results {
+    width: 100%;
+    text-align: center;
+}
+#results table {
+    margin-top: 20px;
+}
