@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <h2>Search your hero:</h2>
+        <div *ngFor="let filter of filterOptions"  class="form-check">
+          <input class="form-check-input position-static" type="radio" class="hero-filter" name="heroFilter" [value]=filter.value>
+          {{filter.filter}}
+        </div>
+      </div>
+      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Search here" [(ngModel)]="search" [(value)]="search" (change)="checkIfInputIsValid()">
+      <div class="binding-demonstration">You are current searching for: {{ search }}</div>
+      <button class="btn btn-primary" *ngIf="inputIsValid">
+          Search
+      </button>
+      <button class="btn btn-warning" *ngIf="!inputIsValid && search !== '' && !radioSelected">
+          {{ missingErrors.filter }}
+      </button>
+      <button class="btn btn-warning" *ngIf="!inputIsValid && radioSelected && search === ''">
+        {{ missingErrors.text }}
+      </button>
+      <button class="btn btn-danger" *ngIf="!inputIsValid">
+        {{ missingErrors.all }}
+      </button>
+    </div>
+  </div>
