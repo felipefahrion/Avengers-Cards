@@ -2,17 +2,17 @@
     <div class="row flex-container">
       <div class="col-lg-8">
         <div class="flex-form">
-          <h2>Search your hero:</h2>
-          <input type="text" class="form-control form-control-inline" id="formGroupExampleInput" placeholder="Search here" [(ngModel)]="search" [(value)]="search" (change)="checkIfInputIsValid()">
-        </div>
-        <div class="flex-form">
-          <h2>With filter:</h2>
+          <h2>Filter:</h2>
           <div class="flex-options">
             <div *ngFor="let filter of filterOptions"  class="form-check form-check-inline">
-              <input class="form-check-input position-static" type="radio" class="hero-filter" [(ngModel)]="selectedFilter" name="heroFilter" [value]=filter.value (change)="checkSelectedFilter()">
+              <input class="form-check-input position-static" type="radio" class="hero-filter" [(ngModel)]="selectedFilter" name="heroFilter" [value]=filter.value>
               {{filter.filter}}
             </div>
           </div>
+        </div>
+        <div class="flex-form">
+          <h2>Search your hero:</h2>
+          <input type="text" class="form-control form-control-inline" id="formGroupExampleInput" placeholder="Search here" [(ngModel)]="search" [(value)]="search" (change)="checkIfInputIsValid()">
         </div>
       </div>
       
@@ -29,6 +29,9 @@
       </button>
       <button class="btn btn-danger" *ngIf="!inputIsValid && !radioSelected && search === ''" disabled>
         {{ missingErrors.all }}
+      </button>
+      <button class="btn btn-secondary" *ngIf="resultsArray.length > 0" (click)="clearResults()">
+          Clear all search results
       </button>
     </div>
   </div>
