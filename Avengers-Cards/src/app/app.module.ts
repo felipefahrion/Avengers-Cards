@@ -6,6 +6,8 @@ import { NavbarComponentComponent } from './navbar-component/navbar-component.co
 import { AppRoutingModule } from './/app-routing.module';
 import { SearchComponentComponent } from './search-component/search-component.component';
 
+import { HttpModule } from '@angular/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -15,7 +17,8 @@ import { SearchComponentComponent } from './search-component/search-component.co
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpModule
   ],
   providers: [],
   bootstrap: [AppComponent]

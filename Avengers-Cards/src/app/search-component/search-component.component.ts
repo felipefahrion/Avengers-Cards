@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AvengersService } from '../avengers.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-search-component',
@@ -15,10 +17,6 @@ export class SearchComponentComponent implements OnInit {
     {
       "filter": "ID", 
       "value" : "id"
-    }, 
-    {
-      "filter": "Alias", 
-      "value" : "aliases"
     }
   ];
   search: string;
@@ -36,8 +34,9 @@ export class SearchComponentComponent implements OnInit {
     {'id': '1', 'name' : 'Bruce Wayne', 'publisher': 'DC', 'alias': 'Batman'},
     {'id': '2', 'name' : 'Thor', 'publisher': 'Marvel', 'alias': 'God of Thunder'}
   ];
+  selectedFilter:string = '';
 
-  constructor() { }
+  constructor(private service: AvengersService) { }
 
   ngOnInit() {
     this.filterOptions;
@@ -62,13 +61,29 @@ export class SearchComponentComponent implements OnInit {
 
   searchAvenger() {
     this.searchOnGoing = true;
-
-    //Call Service here
-
+    this.searchDone = false;
     
-    //When search is done
-    this.searchDone = true;
-    this.searchOnGoing = false;
+    //Call Service here
+    this.service.getSuperHeros(this.search).subscribe( 
+      res => { console.warn(res);
+        let results;
+        if(this.selectedFilter === 'name') {
+          results = res.results[0];
+        } else {
+          results = res;
+        }
+        
+        this.resultsArray.push({'name' : results.name, 'id' : results.id, 'publisher' : results.biography.publisher, 'alias': results.biography.aliases});
+        //When search is done
+        this.searchOnGoing = false;
+        this.searchDone = true;
+      },
+      err => console.log(`Something went wrong: ${err}`)
+    )
+  }
+
+  clearResults() {
+    this.resultsArray = [];
   }
 
 }
