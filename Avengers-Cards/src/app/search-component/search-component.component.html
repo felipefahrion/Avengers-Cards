@@ -1,25 +1,57 @@
 <div class="container">
-    <div class="row">
-      <div class="col-lg-8 mx-auto">
-        <h2>Search your hero:</h2>
-        <div *ngFor="let filter of filterOptions"  class="form-check">
-          <input class="form-check-input position-static" type="radio" class="hero-filter" name="heroFilter" [value]=filter.value>
-          {{filter.filter}}
+    <div class="row flex-container">
+      <div class="col-lg-8">
+        <div class="flex-form">
+          <h2>Search your hero:</h2>
+          <input type="text" class="form-control form-control-inline" id="formGroupExampleInput" placeholder="Search here" [(ngModel)]="search" [(value)]="search" (change)="checkIfInputIsValid()">
+        </div>
+        <div class="flex-form">
+          <h2>With filter:</h2>
+          <div class="flex-options">
+            <div *ngFor="let filter of filterOptions"  class="form-check form-check-inline">
+              <input class="form-check-input position-static" type="radio" class="hero-filter" [(ngModel)]="selectedFilter" name="heroFilter" [value]=filter.value (change)="checkSelectedFilter()">
+              {{filter.filter}}
+            </div>
+          </div>
         </div>
       </div>
-      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Search here" [(ngModel)]="search" [(value)]="search" (change)="checkIfInputIsValid()">
-      <div class="binding-demonstration">You are current searching for: {{ search }}</div>
-      <button class="btn btn-primary" *ngIf="inputIsValid">
+      
+      <div class="binding-demonstration">You are current searching for <span>'{{ search }}'</span> with filter <span>'{{ selectedFilter }}'</span></div>
+      
+      <button class="btn btn-primary" *ngIf="inputIsValid" (click)="searchAvenger()">
           Search
       </button>
-      <button class="btn btn-warning" *ngIf="!inputIsValid && search !== '' && !radioSelected">
+      <button class="btn btn-warning" *ngIf="!inputIsValid && search !== '' && !radioSelected" disabled>
           {{ missingErrors.filter }}
       </button>
-      <button class="btn btn-warning" *ngIf="!inputIsValid && radioSelected && search === ''">
+      <button class="btn btn-warning" *ngIf="!inputIsValid && radioSelected && search === ''" disabled>
         {{ missingErrors.text }}
       </button>
-      <button class="btn btn-danger" *ngIf="!inputIsValid">
+      <button class="btn btn-danger" *ngIf="!inputIsValid && !radioSelected && search === ''" disabled>
         {{ missingErrors.all }}
       </button>
     </div>
   </div>
+
+  <section id="results" class="bg-light">
+    <h1>Results of Search:</h1>
+    <div class="loading" *ngIf="!searchDone">Loading</div>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Publisher</th>
+            <th scope="col">Aliases</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let result of resultsArray">
+            <th scope="row">{{result.id}}</th>
+            <td>{{result.name}}</td>
+            <td>{{result.publisher}}</td>
+            <td>{{result.alias}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </section>
