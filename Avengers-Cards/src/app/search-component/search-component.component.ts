@@ -9,32 +9,32 @@ import { Observable } from 'rxjs';
 })
 export class SearchComponentComponent implements OnInit {
 
-  filterOptions: {filter: string, value: string}[] = [
+  filterOptions: { filter: string, value: string }[] = [
     {
-      "filter": "Name", 
+      "filter": "Name",
       "value": "name"
-    }, 
+    },
     {
-      "filter": "ID", 
-      "value" : "id"
+      "filter": "ID",
+      "value": "id"
     }
   ];
   search: string;
   inputIsValid: boolean = false;
   radioSelected: boolean = false;
   missingErrors = {
-    'filter' : 'Please select a filter option',
-    'text' : 'Please enter search text',
-    'all' : 'You need to select filter and place a search text'
+    'filter': 'Please select a filter option',
+    'text': 'Please enter search text',
+    'all': 'You need to select filter and place a search text'
   };
   tableContent: string = "";
   searchOnGoing: boolean = false;
   searchDone: boolean = false;
   resultsArray = [
-    {'id': '1', 'name' : 'Bruce Wayne', 'publisher': 'DC', 'alias': 'Batman'},
-    {'id': '2', 'name' : 'Thor', 'publisher': 'Marvel', 'alias': 'God of Thunder'}
+    { 'id': '1', 'name': 'Bruce Wayne', 'publisher': 'DC', 'alias': 'Batman' },
+    { 'id': '2', 'name': 'Thor', 'publisher': 'Marvel', 'alias': 'God of Thunder' }
   ];
-  selectedFilter:string = '';
+  selectedFilter: string = '';
 
   constructor(private service: AvengersService) { }
 
@@ -45,15 +45,16 @@ export class SearchComponentComponent implements OnInit {
     this.tableContent;
   }
 
-  checkIfInputIsValid() {
-    let radioInputs = <any> document.getElementsByClassName("hero-filter");
-
-    for(let i = 0; i < radioInputs.length; i++) {
-      if(radioInputs[i].checked) this.radioSelected = true;
+  checkIfInputIsValid(event: KeyboardEvent) {
+    let radioInputs = <any>document.getElementsByClassName("hero-filter");
+    for (let i = 0; i < radioInputs.length; i++) {
+      if (radioInputs[i].checked) this.radioSelected = true;
     }
 
-    if(this.search !== "" && this.radioSelected) { 
+    if (this.search !== "" && this.radioSelected) {
       this.inputIsValid = true;
+      if (event.keyCode == 13 || event.which == 13) this.searchAvenger();
+
     } else {
       this.inputIsValid = false;
     }
@@ -62,18 +63,20 @@ export class SearchComponentComponent implements OnInit {
   searchAvenger() {
     this.searchOnGoing = true;
     this.searchDone = false;
-    
+
+
     //Call Service here
-    this.service.getSuperHeros(this.search).subscribe( 
-      res => { console.warn(res);
+    this.service.getSuperHeros(this.search).subscribe(
+      res => {
+        console.warn(res);
         let results;
-        if(this.selectedFilter === 'name') {
+        if (this.selectedFilter == 'name') {
           results = res.results[0];
         } else {
           results = res;
         }
-        
-        this.resultsArray.push({'name' : results.name, 'id' : results.id, 'publisher' : results.biography.publisher, 'alias': results.biography.aliases});
+
+        this.resultsArray.push({ 'name': results.name, 'id': results.id, 'publisher': results.biography.publisher, 'alias': results.biography.aliases });
         //When search is done
         this.searchOnGoing = false;
         this.searchDone = true;
@@ -81,6 +84,10 @@ export class SearchComponentComponent implements OnInit {
       err => console.log(`Something went wrong: ${err}`)
     )
   }
+
+
+
+
 
   clearResults() {
     this.resultsArray = [];
